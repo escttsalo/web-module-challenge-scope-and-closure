@@ -28,11 +28,16 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
-  
+      - counter1 has the counter function inside a funcion
+      - counter2 returns the outside count variable
+
   2. Which of the two uses a closure? How can you tell?
-  
+      - counter 1 has the closure because it's a function within a function
+
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+      - counter1 is more uniform and will always be the same
+      - counter2 can be remade to make it count higher
 */
 
 // counter1 code
@@ -63,7 +68,7 @@ NOTE: This will be a callback function for the tasks below
 */
 
 function inning(/*Code Here*/){
-    /*Code Here*/
+    return Math.ceil(Math.random()* 2)
 }
 
 
@@ -81,8 +86,16 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*code Here*/){
-  /*Code Here*/
+function finalScore(inn, inn_no){
+  let obj={
+    Home: 0,
+    Away: 0
+  }
+  for(let i=0; i < inn_no; i++){
+    obj.Home += inn()
+    obj.Away += inn()
+  }
+  return obj
 }
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
@@ -90,8 +103,11 @@ Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(inn) {
+    return {
+      Home: inn(),
+      Away: inn()
+    }
 }
 
 
@@ -136,10 +152,26 @@ Use the scoreboard function below to do the following:
 ]  
   */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(get_score,inn,inn_no) {
+    let array = [];
+    let resHome = 0;
+    let resAway = 0;
+    for(let i =0; i < inn_no; i++){
+      const currentScore = get_score(inn)
+      resHome += currentScore.Home;
+      resAway += currentScore.Away;
+      array.push(`Inning ${i+1}: Away ${currentScore.Away} - Home ${currentScore.Home}`);
+      if (((i+1)===9) && (resHome === resAway)){
+        array.push(`This game will require extra innings: Away ${resAway} - Home ${resHome}`);
+      }
+      else if(((i+1)===9) && (resHome != resAway)){
+        array.push(`Final Score: Away ${resAway} - Home ${resHome}`)
+      }
+    }
+    return array
 }
 
+// console.log(scoreboard(getInningScore, inning, 9))
 
 
 
